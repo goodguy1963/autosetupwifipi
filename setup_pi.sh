@@ -231,3 +231,4 @@ service hostapd restart
 service dnsmasq restart
 
 echo "ALL SET"
+exit
