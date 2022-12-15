@@ -132,7 +132,7 @@ https_proxy="https://$PROXY_USERNAME:$PROXY_PASSWORD@$PROXY_HOST:$PROXY_PORT"
 ftp_proxy="ftp://$PROXY_USERNAME:$PROXY_PASSWORD@$PROXY_HOST:$PROXY_PORT"
 no_proxy="localhost,127.0.0.1,$PROXY_EXCEPTIONS"
 EOF
-
+fi
 
 #Check if wifi static configuration is enabled
 if [ "$(cat /var/www/setup.pi/wifi-config | grep wifi-static | cut -d '=' -f 2)" == "yes" ]; then
@@ -203,10 +203,13 @@ chmod +x /var/www/setup.pi/wifi-config.cgi
 echo "setup.pi" > /etc/hostname
 echo "127.0.0.1 setup.pi" >> /etc/hosts
 
+#Unmask hsotapd
+sudo systemctl unmask hostapd.service
+systemctl enable hostapd.service
+
 #Restart services
 service apache2 restart
 service hostapd restart
 service dnsmasq restart
 
 echo "ALL SET"
-
