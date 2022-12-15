@@ -11,7 +11,7 @@ echo "ALREADY CONNECTED"
 cp setup_pi.sh /etc/rc.local
 
 #Add script to run after boot
-cp setuppi.sh /etc/init.d/
+cp setup_pi.sh /etc/init.d/
 else
 
 #Display message on Raspberry Pi HDMI Output
@@ -33,7 +33,7 @@ service dnsmasq start
 fi
 
 #Create locally hosted web server
-a2enmod cgi
+a2enmod cgid
 service apache2 start
 
 #Create GUI for wifi credentials
@@ -209,3 +209,4 @@ service hostapd restart
 service dnsmasq restart
 
 echo "ALL SET"
+
