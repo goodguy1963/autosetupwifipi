@@ -8,10 +8,10 @@ if ping -q -c 1 -W 1 8.8.8.8 >/dev/null; then
 echo "ALREADY CONNECTED"
 
 #Add script to run on boot
-cp setup-pi.sh /etc/rc.local
+cp setup_pi.sh /etc/rc.local
 
 #Add script to run after boot
-cp setup-pi.sh /etc/init.d/
+cp setup_pi.sh /etc/init.d/
 else
 
 #Display message on Raspberry Pi HDMI Output
@@ -33,7 +33,7 @@ service dnsmasq start
 fi
 
 #Create locally hosted web server
-a2enmod cgi
+a2enmod cgid
 service apache2 start
 
 #Create GUI for wifi credentials
@@ -210,3 +210,4 @@ service hostapd restart
 service dnsmasq restart
 
 echo "ALL SET"
+
