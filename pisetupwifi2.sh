@@ -221,4 +221,4 @@ os.system("chmod +x /var/www/setup.pi/wifi-config.cgi")
 os.system("service apache2 restart")
 
 EOF
-fi
+exit;
