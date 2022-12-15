@@ -11,7 +11,7 @@ echo "ALREADY CONNECTED"
 cp setup_pi.sh /etc/rc.local
 
 #Add script to run after boot
-cp setup_pi.sh /etc/init.d/
+cp setuppi.sh /etc/init.d/
 else
 
 #Display message on Raspberry Pi HDMI Output
@@ -33,7 +33,7 @@ service dnsmasq start
 fi
 
 #Create locally hosted web server
-a2enmod cgid
+a2enmod cgi
 service apache2 start
 
 #Create GUI for wifi credentials
@@ -132,6 +132,7 @@ https_proxy="https://$PROXY_USERNAME:$PROXY_PASSWORD@$PROXY_HOST:$PROXY_PORT"
 ftp_proxy="ftp://$PROXY_USERNAME:$PROXY_PASSWORD@$PROXY_HOST:$PROXY_PORT"
 no_proxy="localhost,127.0.0.1,$PROXY_EXCEPTIONS"
 EOF
+fi
 
 #Check if wifi static configuration is enabled
 if [ "$(cat /var/www/setup.pi/wifi-config | grep wifi-static | cut -d '=' -f 2)" == "yes" ]; then
@@ -194,7 +195,6 @@ echo "<h2>Connection failed. Please try again.</h2>"
 fi
 
 echo "</body></html>"
-EOF
 
 #Make CGI script executable
 chmod +x /var/www/setup.pi/wifi-config.cgi
@@ -209,4 +209,3 @@ service hostapd restart
 service dnsmasq restart
 
 echo "ALL SET"
-
