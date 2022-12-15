@@ -1,84 +1,58 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-#Install required packages
-apt-get update
-apt-get install -y hostapd dnsmasq
+#Check if internet connection is available
+if [ "$(ping -c 1 8.8.8.8 | grep '100% packet loss')" != "" ]; then
+#Turn on wireless access point with no password
+sudo apt-get install dnsmasq hostapd
+sudo systemctl stop dnsmasq
+sudo systemctl stop hostapd
 
-#Configure hostapd
-cat /etc/hostapd/hostapd.conf 
-interface=wlan0
-driver=nl80211
-ssid=SETUP_PI
-hw_mode=g
-channel=6
-wmm_enabled=0
-macaddr_acl=0
-auth_algs=1
-ignore_broadcast_ssid=0
-EOF
+#Configure access point settings
+sudo cp /etc/dhcpcd.conf /etc/dhcpcd.conf.bak
+echo "denyinterfaces wlan0" | sudo tee -a /etc/dhcpcd.conf
+sudo systemctl restart dhcpcd
 
-#Configure dnsmasq
-cat /etc/dnsmasq.conf 
-interface=wlan0
-listen-address=192.168.50.1
-bind-interfaces
-server=8.8.8.8
-domain-needed
-bogus-priv
-dhcp-range=192.168.50.50,192.168.50.150,12h
-EOF
+#Create access point configuration file
+sudo cp /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.bak
+echo "interface=wlan0" | sudo tee /etc/hostapd/hostapd.conf
+echo "driver=nl80211" | sudo tee -a /etc/hostapd/hostapd.conf
+echo "ssid=SETUP PI" | sudo tee -a /etc/hostapd/hostapd.conf
+echo "hw_mode=g" | sudo tee -a /etc/hostapd/hostapd.conf
+echo "channel=7" | sudo tee -a /etc/hostapd/hostapd.conf
+echo "macaddr_acl=0" | sudo tee -a /etc/hostapd/hostapd.conf
+echo "auth_algs=1" | sudo tee -a /etc/hostapd/hostapd.conf
+echo "ignore_broadcast_ssid=0" | sudo tee -a /etc/hostapd/hostapd.conf
 
-#Update configuration files to use hostapd
-sed -i 's/#DAEMON_CONF=""/DAEMON_CONF="/etc/hostapd/hostapd.conf"/g' /etc/default/hostapd
-sed -i 's/^#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
+#Configure dnsmasq for access point
+sudo cp /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
+echo "interface=wlan0" | sudo tee /etc/dnsmasq.conf
+echo "dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h" | sudo tee -a /etc/dnsmasq.conf
 
-#Set up NAT
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
+#Enable access point on boot
+sudo systemctl enable hostapd
+sudo systemctl enable dnsmasq
 
-#Save iptables rules
-sh -c "iptables-save > /etc/iptables.ipv4.nat"
+#Start access point
+sudo systemctl start hostapd
+sudo systemctl start dnsmasq
 
-#Update rc.local to restore iptables rules on boot
-sed -i -e '$i \iptables-restore < /etc/iptables.ipv4.nat\n' /etc/rc.local
-
-#Start services
-systemctl unmask hostapd
-systemctl enable hostapd
-systemctl start hostapd
-systemctl enable dnsmasq
-systemctl start dnsmasq
-
-#Create local webpage for wifi setup
-cat /var/www/html/index.html 
-
-<html>
-<head>
-<title>SETUP PI</title>
-</head>
-<body>
-<h1>SETUP PI</h1>
-<p>Please enter your wifi credentials to connect to your network:</p>
-<form action="setup.php" method="post">
-SSID:<br>
-<input type="text" name="ssid"><br>
-Password:<br>
-<input type="password" name="password"><br><br>
-<input type="submit" value="Submit">
-</form>
-</body>
-</html>
-EOF
-#Create PHP script for wifi setup
-cat /var/www/html/setup.php 
-
-<?php
-\$ssid = \$_POST["ssid"];
-\$password = \$_POST["password"];
-
-\$wpa_supplicant_conf = <<<EOD
-ctrl_interface=DIR=/var
+#Create GUI for wifi setup
+sudo apt-get install python3-tk
+python3 -m tkinter -c "from tkinter import ;
+app = Tk();
+app.title('Wifi Setup');
+label1 = Label(app, text='Enter wifi credentials:');
+label1.pack();
+ssid_label = Label(app, text='SSID:');
+ssid_label.pack();
+ssid_entry = Entry(app);
+ssid_entry.pack();
+password_label = Label(app, text='Password:');
+password_label.pack();
+password_entry = Entry(app, show='');
+password_entry.pack();
+def on_click():
+ssid = s
 
 
 
