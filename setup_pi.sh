@@ -170,7 +170,6 @@ netmask $WIFI_NETMASK
 gateway $WIFI_GATEWAY
 dns-nameservers $WIFI_DNS $WIFI_SECONDARY_DNS
 EOF
-fi
 
 #Check if LAN static configuration is enabled
 if [ "$(cat /var/www/setup.pi/wifi-config | grep lan-static | cut -d '=' -f 2)" == "yes" ]; then
