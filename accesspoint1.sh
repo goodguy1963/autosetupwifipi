@@ -5,7 +5,7 @@ apt-get update
 apt-get install -y hostapd dnsmasq
 
 #Configure hostapd
-cat > /etc/hostapd/hostapd.conf 
+cat /etc/hostapd/hostapd.conf 
 interface=wlan0
 driver=nl80211
 ssid=SETUP_PI
@@ -18,7 +18,7 @@ ignore_broadcast_ssid=0
 EOF
 
 #Configure dnsmasq
-cat > /etc/dnsmasq.conf 
+cat /etc/dnsmasq.conf 
 interface=wlan0
 listen-address=192.168.50.1
 bind-interfaces
@@ -51,7 +51,7 @@ systemctl enable dnsmasq
 systemctl start dnsmasq
 
 #Create local webpage for wifi setup
-cat > /var/www/html/index.html 
+cat /var/www/html/index.html 
 
 <html>
 <head>
@@ -71,7 +71,7 @@ Password:<br>
 </html>
 EOF
 #Create PHP script for wifi setup
-cat > /var/www/html/setup.php 
+cat /var/www/html/setup.php 
 
 <?php
 \$ssid = \$_POST["ssid"];
