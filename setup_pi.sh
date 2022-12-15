@@ -7,6 +7,7 @@ if ! ping -c 1 google.com > /dev/null 2>&1; then
 # Display message on HDMI output
 echo "Connect to the 'SETUP PI - Network' to enter WIFI credentials"
 else
+echo "ALREADY CONNECTED"
 exit 0
 fi
 
