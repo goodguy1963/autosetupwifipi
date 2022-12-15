@@ -18,14 +18,33 @@ else
 echo "Connect to the 'SETUP PI - Network' to enter WIFI credentials"
 
 #Turn into wireless access point
-hostapd /etc/hostapd/hostapd.conf
+cat > /etc/hostapd/hostapd.conf <<EOF
+interface=wlan0
+driver=nl80211
+ssid=SETUP PI
+hw_mode=g
+channel=7
+wmm_enabled=0
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_passphrase=12345678
+wpa_key_mgmt=WPA-PSK
+rsn_pairwise=CCMP
+EOF
 
 #Configure DHCP server
-dnsmasq -C /etc/dnsmasq.conf
+cat > /etc/dnsmasq.conf <<EOF
+interface=wlan0
+dhcp-range=10.0.0.2,10.0.0.5,255.255.255.0,12h
+dhcp-option=3,10.0.0.1
+dhcp-option=6,10.0.0.1
+EOF
 
 #Enable IP forwarding and NAT
-sysctl -w net.ipv4.ip_forward=1
-iptables -t nat -A POSTROUTING -j MASQUERADE
+echo 1 > /proc/sys/net/ipv4/ip_forward
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
 #Start services
 service hostapd start
@@ -131,7 +150,7 @@ http_proxy="http://$PROXY_USERNAME:$PROXY_PASSWORD@$PROXY_HOST:$PROXY_PORT"
 https_proxy="https://$PROXY_USERNAME:$PROXY_PASSWORD@$PROXY_HOST:$PROXY_PORT"
 ftp_proxy="ftp://$PROXY_USERNAME:$PROXY_PASSWORD@$PROXY_HOST:$PROXY_PORT"
 no_proxy="localhost,127.0.0.1,$PROXY_EXCEPTIONS"
-EOF
+
 fi
 
 #Check if wifi static configuration is enabled
@@ -141,7 +160,7 @@ WIFI_NETMASK=$(cat /var/www/setup.pi/wifi-config | grep wifi-netmask | cut -d '=
 WIFI_GATEWAY=$(cat /var/www/setup.pi/wifi-config | grep wifi-gateway | cut -d '=' -f 2)
 WIFI_DNS=$(cat /var/www/setup.pi/wifi-config | grep wifi-dns | cut -d '=' -f 2)
 WIFI_SECONDARY_DNS=$(cat /var/www/setup.pi/wifi-config | grep wifi-secondary-dns | cut -d '=' -f 2)
-
+EOF
 #Set up wifi static configuration
 cat <<EOF > /etc/network/interfaces.d/wlan0
 auto wlan0
@@ -205,7 +224,7 @@ echo "127.0.0.1 setup.pi" >> /etc/hosts
 
 #Unmask hsotapd
 sudo systemctl unmask hostapd.service
-systemctl enable hostapd.service
+sudo systemctl enable hostapd.service
 
 #Restart services
 service apache2 restart
