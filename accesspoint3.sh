@@ -79,3 +79,4 @@ read -r ssid password < /tmp/wifi-credentials
 
 # Set up the network interface with the new credentials
 cat <<EOF | sudo tee /etc/w
+
