@@ -53,6 +53,8 @@ fi
 
 #Create locally hosted web server
 a2enmod cgid
+else
+ {a2enmod cgi}
 service apache2 start
 
 #Create GUI for wifi credentials
@@ -170,6 +172,7 @@ netmask $WIFI_NETMASK
 gateway $WIFI_GATEWAY
 dns-nameservers $WIFI_DNS $WIFI_SECONDARY_DNS
 EOF
+fi
 
 #Check if LAN static configuration is enabled
 if [ "$(cat /var/www/setup.pi/wifi-config | grep lan-static | cut -d '=' -f 2)" == "yes" ]; then
@@ -188,7 +191,7 @@ netmask $LAN_NETMASK
 gateway $LAN_GATEWAY
 dns-nameservers $LAN_DNS $LAN_SECONDARY_DNS
 EOF
-
+fi
 
 #Set up wifi connection
 cat <<EOF > /etc/wpa_supplicant/wpa_supplicant.conf
@@ -231,4 +234,4 @@ service hostapd restart
 service dnsmasq restart
 
 echo "ALL SET"
-exit
+if
