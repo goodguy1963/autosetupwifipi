@@ -188,7 +188,7 @@ netmask $LAN_NETMASK
 gateway $LAN_GATEWAY
 dns-nameservers $LAN_DNS $LAN_SECONDARY_DNS
 EOF
-fi
+
 
 #Set up wifi connection
 cat <<EOF > /etc/wpa_supplicant/wpa_supplicant.conf
