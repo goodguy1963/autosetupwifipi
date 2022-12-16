@@ -155,11 +155,12 @@ else
   wpa_config=""
 fi
 
-cat > /etc/wpa_supplicant/wpa_supplicant.conf <<EOF
+cat > /etc/wpa_supplicant/wpa_supplicant.conf <<
+
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 country=DE
-
+#
 network={
   ssid="$ssid"
   psk="$psk"
