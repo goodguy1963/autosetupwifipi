@@ -9,10 +9,10 @@ if ping -q -c 1 -W 1 8.8.8.8 > /dev/null; then
   echo "ALREADY CONNECTED"
 
   # Add script to run on boot
-  cp setup_pi.sh /etc/rc.local
+  cp setwifi.sh /etc/rc.local
 
   # Add script to run after boot
-  cp setup_pi.sh /etc/init.d/
+  cp setwifi.sh /etc/init.d/
 else
   # Display message on Raspberry Pi HDMI Output
   echo "Connect to the 'SETUP PI - Network' to enter WIFI credentials"
@@ -153,7 +153,7 @@ fi
 cat > /etc/wpa_supplicant/wpa_supplicant.conf <<EOF
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
-country=US
+country=DE
 
 network={
   ssid="$ssid"
