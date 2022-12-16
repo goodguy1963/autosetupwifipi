@@ -202,8 +202,7 @@ echo "</html>"
 chmod +x /var/www/setup.pi/wifi-config.cgi
 
 # Create HTML page for success message
-cat <<EOF > /var/www/setup.pi/success.html
-
+cat > /var/www/setup.pi/success.html <<EOF
 <html>
   <head>
     <title>SETUP PI Wifi Configuration</title>
@@ -215,4 +214,3 @@ cat <<EOF > /var/www/setup.pi/success.html
 </html>
 EOF
 ``
-
