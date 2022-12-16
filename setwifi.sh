@@ -61,7 +61,7 @@ a2enmod cgi
 systemctl start apache2
 
 # Create GUI for wifi credentials
-cat <<EOF > /var/www/setup.pi/index.html
+cat > /var/www/setup.pi/index.html <<EOF
 
 <html>
   <head>
@@ -116,7 +116,7 @@ cat <<EOF > /var/www/setup.pi/index.html
 EOF
 
 # Create CGI script for processing form input
-cat <<EOF > /var/www/setup.pi/wifi-config.cgi
+cat > /var/www/setup.pi/wifi-config.cgi <<EOF
 #!/bin/bash
 
 # Get form input
@@ -197,7 +197,6 @@ echo "</head>"
 echo "<body>"
 echo "</body>"
 echo "</html>"
-EOF
 
 # Make CGI script executable
 chmod +x /var/www/setup.pi/wifi-config.cgi
