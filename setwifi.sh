@@ -49,7 +49,7 @@ EOF
   # Start services
   systemctl start hostapd
   systemctl start dnsmasq
-fi
+
 
 # Create locally hosted web server
 a2enmod cgid
@@ -221,3 +221,4 @@ cat > /var/www/setup.pi/success.html <<EOF
 </html>
 EOF
 ``
+fi
