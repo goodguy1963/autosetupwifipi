@@ -47,7 +47,9 @@ EOF
   iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
   # Start services
-  systemctl start hostapd
+  
+  sudo systemctl unmask hostapd.service
+  sudo systemctl start hostapd.service
   systemctl start dnsmasq
 
 
@@ -128,8 +130,7 @@ cat > /var/www/setup.pi/wifi-config.cgi <<EOF
 ssid=$(echo " $QUERY_STRING" | awk -F '[&=]' '{print $3}')
 psk=$(echo " $QUERY_STRING" | awk -F '[&=]' '{print $5}')
 encryption=$(echo " $QUERY_STRING" | awk -F '[&=]' '{print $7}')
-proxy=$(echo " $QUERY_STRING" | awk -F '[&=]
-` '{print $9}')
+proxy=$(echo " $QUERY_STRING" | awk -F '[&=]' '{print $9}')
 proxy_host=$(echo " $QUERY_STRING" | awk -F '[&=]' '{print $11}')
 proxy_port=$(echo " $QUERY_STRING" | awk -F '[&=]' '{print $13}')
 proxy_username=$(echo " $QUERY_STRING" | awk -F '[&=]' '{print $15}')
