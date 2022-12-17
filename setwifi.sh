@@ -18,7 +18,7 @@ else
   echo "Connect to the 'SETUP PI - Network' to enter WIFI credentials"
 
   # Turn into wireless access point
-  cat <<EOF > /etc/hostapd/hostapd.conf 
+sudo cat <<EOF > /etc/hostapd/hostapd.conf 
 interface=wlan0
 driver=nl80211
 ssid=SETUP PI
@@ -35,7 +35,7 @@ rsn_pairwise=CCMP
 EOF
 
   # Configure DHCP server
-  cat <<EOF > /etc/dnsmasq.conf 
+sudo  cat <<EOF > /etc/dnsmasq.conf 
 interface=wlan0
 dhcp-range=10.0.0.2,10.0.0.5,255.255.255.0,12h
 dhcp-option=3,10.0.0.1
@@ -68,7 +68,7 @@ sudo touch /var/www/setup.pi/index.html
 sudo touch /var/www/setup.pi/wifi-config.cgi
 
 # Create GUI for wifi credentials
-cat <<EOF > /var/www/setup.pi/index.html 
+sudo cat <<EOF > /var/www/setup.pi/index.html 
 
 <html>
   <head>
@@ -123,7 +123,7 @@ cat <<EOF > /var/www/setup.pi/index.html
 EOF
 
 # Create CGI script for processing form input
-cat <<EOF > /var/www/setup.pi/wifi-config.cgi 
+sudo cat <<EOF > /var/www/setup.pi/wifi-config.cgi 
 #!/bin/bash
 
 # Get form input
@@ -157,7 +157,7 @@ else
 fi
 
 EOF
-cat <<EOF > /etc/wpa_supplicant/wpa_supplicant.conf 
+sudo cat <<EOF > /etc/wpa_supplicant/wpa_supplicant.conf 
 
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
@@ -171,7 +171,7 @@ network={
 EOF
 
 if [ "$static" == "yes" ]; then
-  cat <<EOF > /etc/dhcpcd.conf 
+  sudo cat <<EOF > /etc/dhcpcd.conf 
 interface wlan0
 static ip_address=$static_ip
 static routers=$static_gateway
@@ -183,7 +183,7 @@ fi
 
 if [ "$proxy" == "
 yes" ]; then
-  cat <<EOF > /etc/apt/apt.conf.d/95proxies 
+  sudo cat <<EOF > /etc/apt/apt.conf.d/95proxies 
 Acquire::http::Proxy "http://$proxy_username:$proxy_password@$proxy_host:$proxy_port";
 Acquire::https::Proxy "https://$proxy_username:$proxy_password@$proxy_host:$proxy_port";
 EOF
@@ -210,7 +210,7 @@ echo "</html>"
 chmod +x /var/www/setup.pi/wifi-config.cgi
 
 # Create HTML page for success message
-cat <<EOF > /var/www/setup.pi/success.html 
+sudo cat <<EOF > /var/www/setup.pi/success.html 
 <html>
   <head>
     <title>SETUP PI Wifi Configuration</title>
