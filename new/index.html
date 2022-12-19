@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <title>SETUP PI Wifi Configuration</title>
+  </head>
+  <body>
+    <h1>SETUP PI Wifi Configuration</h1>
+    <form action="wifi-config.cgi" method="post">
+      <label for="ssid">SSID:</label><br>
+      <input type="text" id="ssid" name="ssid"><br>
+      <label for="psk">Password:</label><br>
+      <input type="password" id="psk" name="psk"><br>
+      <label for="encryption">Encryption:</label><br>
+      <select id="encryption" name="encryption">
+        <option value="wpa">WPA</option>
+        <option value="wep">WEP</option>
+        <option value="wpa2">WPA2</option>
+        <option value="eap">EAP</option>
+      </select><br>
+      <input type="checkbox" id="proxy" name="proxy" value="yes">
+      <label for="proxy">Use proxy:</label><br>
+      <div id="proxy-fields" style="display:none;">
+        <label for="proxy-host">Proxy Host:</label><br>
+        <input type="text" id="proxy-host" name="proxy-host"><br>
+        <label for="proxy-port">Proxy Port:</label><br>
+        <input type="text" id="proxy-port" name="proxy-port"><br>
+        <label for="proxy-username">Proxy Username:</label><br>
+        <input type="text" id="proxy-username" name="proxy-username"><br>
+        <label for="proxy-password">Proxy Password:</label><br>
+        <input type="password" id="proxy-password" name="proxy-password"><br>
+        <label for="proxyexceptions">Proxy Exceptions:</label><br>
+        <input type="text" id="proxy-exceptions" name="proxy-exceptions"><br>
+      </div>
+      <input type="checkbox" id="static" name="static" value="yes">
+      <label for="static">Use static IP:</label><br>
+      <div id="static-fields" style="display:none;">
+        <label for="static-ip">Static IP:</label><br>
+        <input type="text" id="static-ip" name="static-ip"><br>
+        <label for="static-gateway">Gateway:</label><br>
+        <input type="text" id="static-gateway" name="static-gateway"><br>
+        <label for="static-netmask">Netmask:</label><br>
+        <input type="text" id="static-netmask" name="static-netmask"><br>
+        <label for="static-dns1">Primary DNS:</label><br>
+        <input type="text" id="static-dns1" name="static-dns1"><br>
+        <label for="static-dns2">Secondary DNS:</label><br>
+        <input type="text" id="static-dns2" name="static-dns2"><br>
+      </div>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>
