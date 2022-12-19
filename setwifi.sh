@@ -181,9 +181,8 @@ else
   echo "" > /etc/dhcpcd.conf
 fi
 
-if [ "$proxy" == "
-yes" ]; then
-  sudo cat <<EOF > /etc/apt/apt.conf.d/95proxies 
+if [ "$proxy" == "yes" ]; then
+  sudo cat << EOF > /etc/apt/apt.conf.d/95proxies 
 Acquire::http::Proxy "http://$proxy_username:$proxy_password@$proxy_host:$proxy_port";
 Acquire::https::Proxy "https://$proxy_username:$proxy_password@$proxy_host:$proxy_port";
 EOF
