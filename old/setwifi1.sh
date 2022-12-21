@@ -56,7 +56,7 @@ sudo systemctl unmask hostapd.service
 sudo systemctl enable hostapd.service
 sudo systemctl start hostapd.service
 systemctl start dnsmasq
-fi
+
 
 #Create locally hosted web server
 
@@ -257,3 +257,4 @@ subprocess.run(['systemctl', 'restart', 'networking'])
 
 print("Content-type: text/html\n")
 print("Wifi configuration saved and applied successfully")
+fi
