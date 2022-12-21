@@ -11,10 +11,10 @@ if ping -q -c 1 -W 1 8.8.8.8 > /dev/null; then
 echo "ALREADY CONNECTED"
 
 #Add script to run on boot
-cp setwifi.sh /etc/rc.local
+cp setwifi1.sh /etc/rc.local
 
 #Add script to run after boot
-cp setwifi.sh /etc/init.d/
+cp setwifi1.sh /etc/init.d/
 else
 
 #Display message on Raspberry Pi HDMI Output
@@ -257,4 +257,5 @@ subprocess.run(['systemctl', 'restart', 'networking'])
 
 print("Content-type: text/html\n")
 print("Wifi configuration saved and applied successfully")
+EOF
 fi
