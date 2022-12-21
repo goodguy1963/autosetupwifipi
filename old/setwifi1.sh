@@ -4,25 +4,25 @@ Installation Dependencies
 apt update
 apt install dnsmasq hostapd apache2
 
-Check internet connection
+#Check internet connection
 
 
 if ping -q -c 1 -W 1 8.8.8.8 > /dev/null; then
 echo "ALREADY CONNECTED"
 
-Add script to run on boot
-cp setwifi1.sh /etc/rc.local
+#Add script to run on boot
+cp setwifi.sh /etc/rc.local
 
-Add script to run after boot
-cp setwifi1.sh /etc/init.d/
+#Add script to run after boot
+cp setwifi.sh /etc/init.d/
 else
 
-Display message on Raspberry Pi HDMI Output
+#Display message on Raspberry Pi HDMI Output
 echo "Connect to the 'SETUP PI - Network' to enter WIFI credentials"
 
 sudo -s
 
-Turn into wireless access point
+#Turn into wireless access point
 sudo cat <<EOF > /etc/hostapd/hostapd.conf
 interface=wlan0
 driver=nl80211
@@ -39,7 +39,7 @@ wpa_key_mgmt=WPA-PSK
 rsn_pairwise=CCMP
 EOF
 
-Configure DHCP server
+#Configure DHCP server
 sudo cat <<EOF > /etc/dnsmasq.conf
 interface=wlan0
 dhcp-range=10.0.0.2,10.0.0.5,255.255.255.0,12h
@@ -47,34 +47,34 @@ dhcp-option=3,10.0.0.1
 dhcp-option=6,10.0.0.1
 EOF
 
-Enable IP forwarding and NAT
+#Enable IP forwarding and NAT
 echo 1 > /proc/sys/net/ipv4/ip_forward
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
-Start services
+#Start services
 sudo systemctl unmask hostapd.service
 sudo systemctl enable hostapd.service
 sudo systemctl start hostapd.service
 systemctl start dnsmasq
 fi
 
-Create locally hosted web server
+#Create locally hosted web server
 
 a2enmod cgid
 systemctl restart apache2
 
-Enable CGI module for Apache
+#Enable CGI module for Apache
 a2enmod cgi
 
-Start Apache
+#Start Apache
 systemctl start apache2
 
-Create Directory and Files
+#Create Directory and Files
 sudo mkdir -p /var/www/setup.pi
 sudo touch /var/www/setup.pi/index.html
 sudo touch /var/www/setup.pi/wifi-config.cgi
 
-Create GUI for wifi credentials
+#Create GUI for wifi credentials
 sudo cat <<EOF > /var/www/setup.pi/index.html
 
 <!-- Create GUI for wifi credentials -->
@@ -150,7 +150,7 @@ console.error("Geolocation or Network Information API not supported");
   </body>
 </html>
 EOF
-Create script to handle wifi configuration
+#Create script to handle wifi configuration
 sudo cat <<EOF > /var/www/setup.pi/wifi-config.cgi
 #!/usr/bin/env python
 import cgi
@@ -211,7 +211,7 @@ if proxy == :</label><br>
   </body>
 </html>
 EOF
-Create script to handle wifi configuration
+#Create script to handle wifi configuration
 sudo cat <<EOF > /var/www/setup.pi/wifi-config.cgi
 #!/usr/bin/env python
 import cgi
@@ -257,5 +257,3 @@ subprocess.run(['systemctl', 'restart', 'networking'])
 
 print("Content-type: text/html\n")
 print("Wifi configuration saved and applied successfully")
-EOF
-
