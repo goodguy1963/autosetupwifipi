@@ -1,6 +1,6 @@
 #!/bin/bash
 
-Installation Dependencies
+#Installation Dependencies
 apt update
 apt install dnsmasq hostapd apache2
 
